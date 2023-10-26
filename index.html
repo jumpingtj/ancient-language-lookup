@@ -42,7 +42,7 @@
           console.log(res);
           outElm.innerHTML = res;
       }
-      fetch("/table.json")
+      fetch("table.json")
         .then((res) => res.json())
         .then((out) => {
         table = out;
