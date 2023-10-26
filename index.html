@@ -17,6 +17,7 @@
           for (var i = 0; i < table.length; i++) {
             var exp = new RegExp("(?:^|,| )" + v + "(?:$|,| )", "i");
             if (table[i][0].match(exp) || table[i][1].match(exp)) {
+              navigator.clipboard.writeText(table[i][1]);
               ress.push(table[i][0] + ": " + table[i][1]);
             }
           }
@@ -44,7 +45,7 @@
           throw err;
         });
         document.addEventListener("keypress", (ev) => {
-            if (ev.keyCode === 32 && table !== "not defined") {
+            if (ev.keyCode === 13 && table !== "not defined") {
                 main();
             }
         });
