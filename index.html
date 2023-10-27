@@ -1,60 +1,63 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
+    <title>ALLU</title>
   </head>
   <body>
     <div id="content">
-    <h1>Ancient language look up</h1>
-    <input type="text" id="inp">
-    <div id="out"></div>
+      <h1>Ancient Language Look-Up</h1>
+      <input type="text" id="inp" />
+      <div id="out"></div>
     </div>
     <script type="module">
-        var table = "not defined";
-        var inpElm = document.getElementById("inp")
-        var outElm = document.getElementById("out")
+      var table = "not defined";
+      var inpElm = document.getElementById("inp");
+      var outElm = document.getElementById("out");
       function main() {
         var v = inpElm.value;
         console.log(v);
-          if (v === null) {
-            return;
+        if (!v) {
+          return;
+        }
+        var ress = [];
+        for (var i = 0; i < table.length; i++) {
+          var exp = new RegExp("(?:^|,| )" + v + "(?:$|,| )", "i");
+          if (table[i][0].match(exp) || table[i][1].match(exp)) {
+            ress.push(table[i][0] + ": " + table[i][1]);
           }
-          var ress = [];
-          for (var i = 0; i < table.length; i++) {
-            var exp = new RegExp("(?:^|,| )" + v + "(?:$|,| )", "i");
-            if (table[i][0].match(exp) || table[i][1].match(exp)) {
-              navigator.clipboard.writeText(table[i][1]);
-              ress.push(table[i][0] + ": " + table[i][1]);
-            }
-          }
-          ress = ress.sort(function(a, b) {
-            return a.length - b.length || // sort by length, if equal then
-                   a.localeCompare(b);    // sort by dictionary order
-          });
-          var res = "";
-          for (var i=0;i<ress.length;i++) {
-            console.log(ress[i]);
+        }
+        ress = ress.sort(function (a, b) {
+          return (
+            a.length - b.length || // sort by length; if equal then
+            a.localeCompare(b)     // sort by dictionary order
+          );
+        });
+        var res = "";
+        for (var i = 0; i < ress.length; i++) {
+          console.log(ress[i]);
+          if (!i) {
+            res += "<span id='top-res'>" + ress[i] + "</span><br><br>";
+          } else {
             res += ress[i] + "<br>";
-            if (!i) {
-                res += "<br>"
-            }
           }
-          console.log(res);
-          outElm.innerHTML = res;
+        }
+        console.log(res);
+        outElm.innerHTML = res;
       }
       fetch("table.json")
         .then((res) => res.json())
         .then((out) => {
-        table = out;
+          table = out;
         })
         .catch((err) => {
           throw err;
         });
-        document.addEventListener("keypress", (ev) => {
-            if (ev.keyCode === 13 && table !== "not defined") {
-                main();
-            }
-        });
+      document.addEventListener("keypress", (ev) => {
+        if (ev.keyCode === 13 && table !== "not defined") {
+          main();
+        }
+      });
     </script>
   </body>
 </html>
