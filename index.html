@@ -21,8 +21,8 @@
           return;
         }
         var ress = [];
+        var exp = new RegExp("(?:^|,| ))" + v + "(?:$|,| )", "i");
         for (var i = 0; i < table.length; i++) {
-          var exp = new RegExp("(?:^|,| )" + v + "(?:$|,| )", "i");
           if (table[i][0].match(exp) || table[i][1].match(exp)) {
             ress.push(table[i][0] + ": " + table[i][1]);
           }
@@ -33,7 +33,7 @@
             a.localeCompare(b)     // sort by dictionary order
           );
         });
-        var res = "";
+        var res = ress.length?"":(v+" not found");
         for (var i = 0; i < ress.length; i++) {
           console.log(ress[i]);
           if (!i) {
